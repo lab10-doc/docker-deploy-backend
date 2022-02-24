@@ -1,0 +1,7 @@
+version: '3.3'
+
+services:
+  frontend:
+    image: taoluck/234-deploylab-backend:latest
+    ports:
+      - "8084:8080"
