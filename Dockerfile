@@ -1,11 +1,10 @@
-FROM node:10-alpine as node
-wORKDIR /app
-COPY package*.json /app/
-RUN npm install
-COPY ./ /app/
-ARG TARGET=ng-deploy
-RUN npm run ${TARGET}
-FROM nginx:1.13
-COPY --from=node /app/dist/ /usr/share/nginx/html
-COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+FROM openjdk:16-jdk-alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+EXPOSE 8080
+
+ENV JAVA_PROFILE prod
+ARG DEPENDENCY=target/dependency
+COPY ${DEPENDENCY}/BOOT-INF/lib / app/lib
+COPY ${DEPENDENCY}/META-INF /app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /app
+ENTRYPOINT ["java" , "-Dspring.profiles.active=${JAVA_PROFILZ}"，"-cp" , "app:app/lib/*", "camt.se234.lab10.Lab10Application"]
